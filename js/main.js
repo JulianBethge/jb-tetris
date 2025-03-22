@@ -1,25 +1,71 @@
-console.log("main.js wurde geladen");
-
 class Tetris {
-    constructor() {
-        
+  constructor() {
+    this.boardVisual = null
+    this.boardMath = null
+    this.intervalId = null
+    this.piece = null
+  }
+  start() {
+    // Create the visual board
+    this.boardVisual = document.getElementById("board")
+    this.boardMath = Array.from({ length: boardHeight }, () =>
+      Array(boardWidth).fill(0)
+    )
+
+    // Add cells to the visual board
+    for (let row = 0; row < boardHeight; row++) {
+      for (let col = 0; col < boardWidth; col++) {
+        let cell = document.createElement("div")
+        cell.classList.add("cell")
+        this.boardVisual.appendChild(cell)
+      }
     }
+
+    // Start the game loop
+    this.runGameLoop()
+  }
+  runGameLoop() {
+    this.intervalId = setInterval(() => {}, 1000)
+  }
 }
 
-const boardWidth = 10;
-const boardHeight = 20;
-const tetrisBoard = Array.from({ length: boardHeight }, () => Array(boardWidth).fill(0));
+class Piece {
+  constructor() {
+    this.x = 0
+    this.y = 0
+    this.rotation = 0
+    this.color = "red"
+    this.shape = [
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ]
+    this.createDomElement()
+  }
+  createDomElement() {
+    this.domElement = document.createElement("div")
+    this.domElement.classList.add("piece")
+    this.domElement.style.backgroundColor = this.color
 
-const board = document.getElementById("board")
-
-for (let row = 0; row < boardHeight; row++) {
-    for (let col = 0; col < boardWidth; col++) {
-      const cell = document.createElement("div");
-      cell.classList.add("cell");
-      board.appendChild(cell);
+    for (let row = 0; row < 4; row++) {
+      for (let col = 0; col < 4; col++) {
+        if (this.shape[row][col] === 1) {
+          let cell = document.createElement("div")
+          cell.classList.add("cell")
+          this.domElement.appendChild(cell)
+        }
+      }
     }
   }
+}
 
-console.log(tetrisBoard);
+// Define the dimensions of the board
+const boardWidth = 10
+const boardHeight = 20
 
-const tetris = new Tetris();
+// Initialize the game
+const tetris = new Tetris()
+
+// Start the game
+tetris.start()
